@@ -2,14 +2,19 @@ import DataList from "@/components/DataList";
 import DepositOrWithdrawalBox from "@/components/DepositOrWithdrawalBox";
 import HeaderNav from "@/components/HeaderNav";
 import { LineDivider } from "@/components/LineDivider";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 import SectionHeading from "@/components/SectionHeading";
+
 import VaultChart from "@/components/VaultChart";
-import { useUserBalance } from "@/hooks";
+import { useCustomSign, useUserBalance } from "@/hooks";
+import { vaults } from "@/lib/vaults";
+import { Vault } from "@/types";
 import {
   Box,
   Flex,
   HStack,
   Heading,
+  Image,
   ResponsiveValue,
   Stack,
   Tab,
@@ -19,11 +24,33 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import axios from "axios";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { Router, useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-export default function VaultPage() {
-  const { balance } = useUserBalance();
-  console.log({ balance });
+export default function VaultPage({
+  vault,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  // const { balance } = useUserBalance();
+  // console.log({ balance });
+  const { connection } = useConnection();
+  const { signed } = useCustomSign();
+  const { publicKey, connecting, connected } = useWallet();
+  const router = useRouter();
+  if (!vault) router.reload();
+  const [balance, setBalance] = useState<number | null>(null);
+  console.log({ balance, signed, publicKey, connecting, connected });
 
+  useEffect(() => {
+    if (publicKey && signed) {
+      connection
+        .getBalance(publicKey, "max")
+        .then((balance) => setBalance(balance));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicKey]);
   const walletBalance = 0;
   const walletToken = "USDC";
   const tabBtnStyle = {
@@ -92,20 +119,42 @@ export default function VaultPage() {
     <>
       <HeaderNav />
       <Box as="main" mx={"auto"} maxW={"1350"}>
+        {vault && vault?.slug === "bonking-dragon" && (
+          <HStack
+            maxW={1300}
+            justify={"flex-end"}
+            py={4}
+            px={{ lg: 6, base: 4 }}
+          >
+            {" "}
+            <Image
+              alt=""
+              src={vault?.mentions?.["bonk"]}
+              w={"45px"}
+              h={"45px"}
+            />
+          </HStack>
+        )}
         <Box
           textAlign={"center"}
           py={{ lg: 12, base: 8 }}
           px={4}
           mt={10}
-          bg={"#000b url('/images/pattern.jpg') center / cover no-repeat"}
+          bg={`#000b url(${
+            vault?.cover || "/images/pattern.jpg"
+          }) center / cover no-repeat`}
           backgroundBlendMode={"darken"}
         >
           <Heading size={{ sm: "3xl", base: "2xl" }} mb={4}>
-            SuperCharger
+            {vault?.name}
           </Heading>
-          <Text fontSize={{ sm: "22px", base: "20px" }} color={"gray.300"}>
-            Multiply your yields with delta-neutral market making strategies
-            focused on SOL.
+          <Text
+            fontSize={{ sm: "22px", base: "20px" }}
+            color={"gray.300"}
+            maxW={1000}
+            mx={"auto"}
+          >
+            {vault?.intro}
           </Text>
         </Box>
         <HStack
@@ -217,7 +266,7 @@ export default function VaultPage() {
                         fontWeight={700}
                         fontFamily={"var(--font-comfortaa)"}
                       >
-                        $1.14
+                        $0.0
                       </Text>
                       <Text as="span" color={"gray.300"}>
                         Your Balance
@@ -258,7 +307,7 @@ export default function VaultPage() {
                       title="Strategy"
                       containerStyleProps={{ mt: 0 }}
                     />
-                    <Stack gap={4}>
+                    {/* <Stack gap={4}>
                       <Text>
                         Supercharger vault employs a delta-neutral market making
                         and liquidity provision strategy, primarily on Drift
@@ -272,33 +321,12 @@ export default function VaultPage() {
                           funds cannot be withdrawn by anyone but you.
                         </Text>
                       </Text>
-                    </Stack>
+                    </Stack> */}
+                    <MarkdownRenderer markdown={vault?.strategy as string} />
                   </Box>
                   <Box>
                     <SectionHeading title="Risks" />
-                    <Stack gap={4}>
-                      <Text>
-                        <Text as={"strong"} fontWeight={700}>
-                          Volatility Risk:
-                        </Text>{" "}
-                        Supercharger vault is exposed to volatility risk because
-                        rapid and large price movements can impact its ability
-                        to buy or sell instrument at desired prices. High
-                        volatility can widen bid-ask spreads, reducing
-                        profitability for the vault.
-                      </Text>
-                      <Text>
-                        <Text as={"strong"} fontWeight={700}>
-                          Counterparty Risk:
-                        </Text>{" "}
-                        Supercharger vault faces counterparty risk when dealing
-                        with other market participants. If vault enters into
-                        trades with a counterparty and the counterparty fails to
-                        fulfill their obligations, such as failing to deliver
-                        securities or make payment, the market maker may suffer
-                        financial losses.
-                      </Text>
-                    </Stack>
+                    <MarkdownRenderer markdown={vault?.risk as string} />
                   </Box>
                   <Box>
                     <SectionHeading title="Lock Up Period & Withdrawals" />
@@ -343,4 +371,15 @@ export default function VaultPage() {
       </Box>
     </>
   );
+}
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { slug } = ctx.query;
+
+  const vault = vaults.find((v) => v.slug === (slug as string));
+  return {
+    props: {
+      vault,
+    },
+  };
 }

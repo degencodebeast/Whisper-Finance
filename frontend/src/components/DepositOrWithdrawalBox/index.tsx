@@ -110,16 +110,27 @@ export const TradeTypeBox = ({
       amount: "" as number | string,
     },
     onSubmit: (values) => {
+      formik.setSubmitting(true);
+
       if (type === "deposit") {
-        toast({
-          status: "success",
-          title: "Deposited successfully",
-        });
+        setTimeout(() => {
+          toast({
+            status: "success",
+            title: "Deposited successfully",
+          });
+          formik.setSubmitting(false);
+          formik.resetForm();
+        }, 2000);
       } else {
-        toast({
-          status: "success",
-          title: "Withdrawal request successful",
-        });
+        setTimeout(() => {
+          toast({
+            status: "success",
+            title: "Withdrawal request successful",
+          });
+          formik.setSubmitting(false);
+
+          formik.resetForm();
+        }, 2000);
       }
     },
   });
@@ -201,6 +212,10 @@ export const TradeTypeBox = ({
         </Stack>
         <Button
           type="submit"
+          isLoading={formik.isSubmitting}
+          loadingText={
+            type === "deposit" ? "Depositing..." : "Submitting request..."
+          }
           size={"lg"}
           isDisabled={formik.values.amount === 0 || formik.values.amount === ""}
         >

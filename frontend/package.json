@@ -14,6 +14,7 @@
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
     "@chakra-ui/react": "^2.8.2",
+    "@chakra-ui/system": "^2.6.2",
     "@drift-labs/sdk": "2.84.0-beta.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -26,7 +27,7 @@
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.92.3",
     "axios": "^1.7.2",
-    "bs58": "^4.0.1",
+    "bs58": "4.0.1",
     "chart.js": "^4.4.3",
     "date-fns": "^3.6.0",
     "formik": "^2.4.6",
@@ -37,7 +38,9 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
+    "react-markdown": "^9.0.1",
     "recharts": "^2.12.7",
+    "remark-gfm": "^4.0.0",
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {

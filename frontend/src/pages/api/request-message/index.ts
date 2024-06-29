@@ -2,12 +2,23 @@ import { mainHandler } from "@/utils";
 
 import { type NextApiRequest, type NextApiResponse } from "next";
 
+const TIME = new Date();
+const FUTURE = new Date(
+  TIME.getFullYear(),
+  TIME.getMonth(),
+  TIME.getDate() + 7,
+  TIME.getHours(),
+  TIME.getMinutes(),
+  TIME.getSeconds(),
+  TIME.getMilliseconds()
+);
 const domain = "Enigma";
 const statement = "Please sign this message to confirm your identity.";
 // const uri = "https://example.com";
-const expirationTime = new Date().getTime() + 3600 * 1000; // 1 hour later
-const notBefore = new Date().getTime();
-const nonce = Math.floor(Math.random() * 1000000);
+const expirationTime = FUTURE.toISOString();
+const notBefore = TIME.toISOString();
+const nonce = Math.random().toString(16).substring(2);
+const timeout = 60;
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -24,6 +35,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
       address,
       domain,
       statement,
+      timeout,
       expirationTime,
       notBefore,
       nonce
@@ -39,10 +51,10 @@ function createAuthMessage(
   address: string,
   domain: string,
   statement: string,
-
-  expirationTime: number,
-  notBefore: number,
-  nonce: number
+  timeout: number,
+  expirationTime: string,
+  notBefore: string,
+  nonce: string
 ) {
   return `${statement}
     Domain: ${domain}
@@ -50,5 +62,6 @@ function createAuthMessage(
     Nonce: ${nonce}
     Not before: ${notBefore}
     Expiration time: ${expirationTime}
+    Timeout: ${timeout}
   `;
 }
