@@ -13,7 +13,7 @@ export default function HeaderNav() {
       px={{ lg: 4, base: 3 }}
     >
       <Heading>
-        <Link href={"/"}>Enigma</Link>
+        <Link href={"/"}>Whisper Finance</Link>
       </Heading>
       <nav></nav>
 

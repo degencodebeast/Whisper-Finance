@@ -3,12 +3,16 @@ import VaultCard from "@/components/VaultCard";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { vaults } from "@/lib/vaults";
+import Head from "next/head";
 
 export default function Home({
   vaults,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
+    <Head>
+      <title> Whisper Finance - Base Trading Protocol</title>
+    </Head>
       <HeaderNav />
       <main>
         <Box

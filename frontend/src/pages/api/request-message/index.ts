@@ -12,7 +12,7 @@ const FUTURE = new Date(
   TIME.getSeconds(),
   TIME.getMilliseconds()
 );
-const domain = "Enigma";
+const domain = "Whisper Finance";
 const statement = "Please sign this message to confirm your identity.";
 // const uri = "https://example.com";
 const expirationTime = FUTURE.toISOString();

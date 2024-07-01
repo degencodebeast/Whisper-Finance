@@ -56,7 +56,7 @@ To install this project:
    Clone the project repository from GitHub:
 
    ```
-   git clone https://github.com/enigma-xyz/enigma_protocol
+   git clone  https://github.com/degencodebeast/Whisper-Finance
    ```
 
 2. **Navigate to the Project Directory**
