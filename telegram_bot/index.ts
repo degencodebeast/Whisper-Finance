@@ -29,7 +29,7 @@ bot.command('start', (ctx) => {
     .row()
     .text('Summary of Trade', 'summary');
 
-  ctx.reply('Hello there! welcome to Enigma.\nPlease select an option:', {
+  ctx.reply('Hello there! welcome to Whisper Finance.\nPlease select an option:', {
     reply_markup: keyboard,
   });
 });

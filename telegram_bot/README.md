@@ -1,4 +1,4 @@
-# enigma-bot
+# whisper-finance-bot
 compile code run
 npx tsc
 
