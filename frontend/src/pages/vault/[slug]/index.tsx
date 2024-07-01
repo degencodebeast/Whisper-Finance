@@ -6,7 +6,7 @@ import MarkdownRenderer from "@/components/MarkdownRenderer";
 import SectionHeading from "@/components/SectionHeading";
 
 import VaultChart from "@/components/VaultChart";
-import { useCustomSign, useUserBalance } from "@/hooks";
+import { useUserBalance } from "@/hooks";
 import { vaults } from "@/lib/vaults";
 import { Vault } from "@/types";
 import {
@@ -24,7 +24,6 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { Router, useRouter } from "next/router";
@@ -33,25 +32,14 @@ import { useEffect, useState } from "react";
 export default function VaultPage({
   vault,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // const { balance } = useUserBalance();
-  // console.log({ balance });
-  const { connection } = useConnection();
-  const { signed } = useCustomSign();
-  const { publicKey, connecting, connected } = useWallet();
+  const { balance } = useUserBalance();
+ 
+  console.log({ balance, });
   const router = useRouter();
   if (!vault) router.reload();
-  const [balance, setBalance] = useState<number | null>(null);
-  console.log({ balance, signed, publicKey, connecting, connected });
 
-  useEffect(() => {
-    if (publicKey && signed) {
-      connection
-        .getBalance(publicKey, "max")
-        .then((balance) => setBalance(balance));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicKey]);
-  const walletBalance = 0;
+
+  const walletBalance = balance;
   const walletToken = "USDC";
   const tabBtnStyle = {
     fontSize: { xl: "24px", base: "16px", md: "20px" },
