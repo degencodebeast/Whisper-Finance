@@ -350,7 +350,7 @@ export default function VaultPage({
               >
                 <DepositOrWithdrawalBox
                   walletToken={walletToken}
-                  walletBalance={walletBalance}
+                  walletBalance={+walletBalance}
                 />
               </TabPanel>
             </TabPanels>
