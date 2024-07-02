@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import Head from "next/head";
 import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -105,24 +106,12 @@ export default function VaultPage({
   const yourTransactionHistory = { "Deposited 1.15 USDC": "08 Jun 2024" };
   return (
     <>
+    <Head>
+      <title>{vault?.name}</title>
+    </Head>
       <HeaderNav />
       <Box as="main" mx={"auto"} maxW={"1350"}>
-        {vault && vault?.slug === "bonking-dragon" && (
-          <HStack
-            maxW={1300}
-            justify={"flex-end"}
-            py={4}
-            px={{ lg: 6, base: 4 }}
-          >
-            {" "}
-            <Image
-              alt=""
-              src={vault?.mentions?.["bonk"]}
-              w={"45px"}
-              h={"45px"}
-            />
-          </HStack>
-        )}
+        
         <Box
           textAlign={"center"}
           py={{ lg: 12, base: 8 }}
