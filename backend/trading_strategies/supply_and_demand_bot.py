@@ -87,31 +87,6 @@ async def ask_bid(symbol, slippage_tolerance=0.02):  # 2.0% default slippage tol
         print(f"Error fetching price for {symbol}: {e}")
         return None, None, None, None
 
-# async def ask_bid(symbol):
-#     try:
-#         # Get the current price from Kwenta
-#         price_data = await kwenta.get_current_asset_price(symbol)
-        
-#         # Extract the current price
-#         current_price = float(price_data['price'])
-        
-#         # Calculate a simulated spread
-#         spread = current_price * 0.0002  # 0.02% spread, adjust as needed
-        
-#         # Calculate simulated ask and bid prices
-#         ask = current_price + (spread / 2)
-#         bid = current_price - (spread / 2)
-        
-#         return ask, bid, None  # Still returning None for l2_data as it's not applicable
-#     except Exception as e:
-#         print(f"Error fetching price for {symbol}: {e}")
-#         return None, None, None
-    
-    # price_data = await kwenta.get_current_asset_price(symbol)
-    # ask = float(price_data['ask'])
-    # bid = float(price_data['bid'])
-    # return ask, bid, None  # Returning None for l2_data as it's not directly available
-
 async def limit_order(symbol, is_buy, size, limit_price):
     #rounding = (await get_sz_px_decimals(coin))[0]
     #sz = round(sz, rounding)
@@ -134,37 +109,6 @@ async def acct_bal(wallet_address):
     print(f'Current account value: {balance["balance_usd"]}')
     return float(balance['balance_usd'])
 
-# async def get_position_andmaxpos(symbol, account, max_positions):
-#     all_positions = await kwenta.get_all_positions(wallet_address=account)
-#     open_positions = [pos for pos in all_positions if float(pos['size']) != 0]
-    
-#     num_of_pos = len(open_positions)
-#     print(f'Current account value: {await acct_bal(account)}')
-    
-#     if num_of_pos > max_positions:
-#         print(f'We are in {num_of_pos} positions and max pos is {max_positions}... closing positions')
-#         for position in open_positions:
-#             await kill_switch(position['asset'], account)
-#     else:
-#         print(f'We are in {num_of_pos} positions and max pos is {max_positions}... not closing positions')
-
-#     position = next((pos for pos in open_positions if pos['asset'] == symbol), None)
-#     if position:
-#         in_pos = True
-#         size = float(position['size'])
-#         pos_sym = position['asset']
-#         entry_px = float(position['average_entry'])
-#         pnl_perc = float(position['pnl_percent'])
-#         long = size > 0
-#     else:
-#         in_pos = False
-#         size = 0
-#         pos_sym = None
-#         entry_px = 0
-#         pnl_perc = 0
-#         long = None
-
-#     return [position], in_pos, size, pos_sym, entry_px, pnl_perc, long, num_of_pos
 
 async def get_position(symbol):
     # web3 = kwenta.web3
@@ -212,7 +156,7 @@ async def get_position(symbol):
     return [position], in_pos, size_ether, pos_symbol, entry_price_usd, pnl_perc, long
 
 
-def check_market_orders(token_symbol):
+async def check_market_orders(token_symbol):
     delayed_order = kwenta.check_delayed_orders(token_symbol, sm_account)
     
     if delayed_order['is_open']:
@@ -231,7 +175,7 @@ def check_market_orders(token_symbol):
         }
     return None
 
-def get_unexecuted_open_orders(account):
+async def get_unexecuted_open_orders(account):
     unexecuted_orders = []
     
     with ThreadPoolExecutor(max_workers=10) as executor:
@@ -328,29 +272,6 @@ async def close_all_positions(account):
         print("No open positions to close")
 
     return closed_positions
-
-# async def kill_switch(symbol, account):
-#     try:
-#         await kwenta.close_position(symbol, account, execute_now=True)
-#         print(f"Position in {symbol} closed successfully")
-#     except Exception as e:
-#         print(f"Error in kill switch for {symbol}: {e}")
-
-# # Usage in your bot function
-# async def bot():
-#     # ... (other bot logic)
-
-#     # When you need to close all positions
-#     closed_positions = await close_all_positions(kwenta, account1)
-
-#     # ... (rest of bot logic)
-
-# async def close_all_positions(account):
-#     all_positions = await kwenta.get_all_positions(wallet_address=account)
-#     for position in all_positions:
-#         if float(position['size']) != 0:
-#             await kill_switch(position['asset'], account)
-#     print('All positions have been closed')
 
 async def calculate_bollinger_bands(df, length=20, std_dev=2):
     df['close'] = pd.to_numeric(df['close'], errors='coerce')
@@ -536,6 +457,92 @@ if __name__ == "__main__":
     sm_account = kwenta.get_sm_accounts()[0]
 
     asyncio.run(main())
+
+
+
+
+# async def kill_switch(symbol, account):
+#     try:
+#         await kwenta.close_position(symbol, account, execute_now=True)
+#         print(f"Position in {symbol} closed successfully")
+#     except Exception as e:
+#         print(f"Error in kill switch for {symbol}: {e}")
+
+# # Usage in your bot function
+# async def bot():
+#     # ... (other bot logic)
+
+#     # When you need to close all positions
+#     closed_positions = await close_all_positions(kwenta, account1)
+
+#     # ... (rest of bot logic)
+
+# async def close_all_positions(account):
+#     all_positions = await kwenta.get_all_positions(wallet_address=account)
+#     for position in all_positions:
+#         if float(position['size']) != 0:
+#             await kill_switch(position['asset'], account)
+#     print('All positions have been closed')
+
+
+# async def ask_bid(symbol):
+#     try:
+#         # Get the current price from Kwenta
+#         price_data = await kwenta.get_current_asset_price(symbol)
+        
+#         # Extract the current price
+#         current_price = float(price_data['price'])
+        
+#         # Calculate a simulated spread
+#         spread = current_price * 0.0002  # 0.02% spread, adjust as needed
+        
+#         # Calculate simulated ask and bid prices
+#         ask = current_price + (spread / 2)
+#         bid = current_price - (spread / 2)
+        
+#         return ask, bid, None  # Still returning None for l2_data as it's not applicable
+#     except Exception as e:
+#         print(f"Error fetching price for {symbol}: {e}")
+#         return None, None, None
+    
+    # price_data = await kwenta.get_current_asset_price(symbol)
+    # ask = float(price_data['ask'])
+    # bid = float(price_data['bid'])
+    # return ask, bid, None  # Returning None for l2_data as it's not directly available
+
+
+# async def get_position_andmaxpos(symbol, account, max_positions):
+#     all_positions = await kwenta.get_all_positions(wallet_address=account)
+#     open_positions = [pos for pos in all_positions if float(pos['size']) != 0]
+    
+#     num_of_pos = len(open_positions)
+#     print(f'Current account value: {await acct_bal(account)}')
+    
+#     if num_of_pos > max_positions:
+#         print(f'We are in {num_of_pos} positions and max pos is {max_positions}... closing positions')
+#         for position in open_positions:
+#             await kill_switch(position['asset'], account)
+#     else:
+#         print(f'We are in {num_of_pos} positions and max pos is {max_positions}... not closing positions')
+
+#     position = next((pos for pos in open_positions if pos['asset'] == symbol), None)
+#     if position:
+#         in_pos = True
+#         size = float(position['size'])
+#         pos_sym = position['asset']
+#         entry_px = float(position['average_entry'])
+#         pnl_perc = float(position['pnl_percent'])
+#         long = size > 0
+#     else:
+#         in_pos = False
+#         size = 0
+#         pos_sym = None
+#         entry_px = 0
+#         pnl_perc = 0
+#         long = None
+
+#     return [position], in_pos, size, pos_sym, entry_px, pnl_perc, long, num_of_pos
+
 
 # async def bot():
 #     account1 = eth_account.Account.from_key(private_key)
