@@ -25,17 +25,17 @@ We wrote our trading strategies using `Python` and backtested them with the `Bac
 
 We wrote our bots then connected it to our Kwenta protocol based vaults that trade on the Kwenta Protocol DEX. We are currently running three different strategies on our vaults at the moment: 
 
-1. The Kwentaing Tiger Vault - which trades the supply and demand zone strategy which trades the SOL-USD perpetual pair. Users deposit USDC into this vault.
+1. The Drifting Tiger Vault - which trades the supply and demand zone strategy which trades the SOL-USD perpetual pair. Users deposit USDC into this vault.
 
 2. The Bonking Dragon Vault - which trades the bollinger band + EMA strategy for the 1MBONK perpetual pair. Users deposit can deposit BONK or USDC into this vault. If users deposit BONK into the vault our bot borrows USDC on their behalf and trades with it, in a bull market they earn as their BONK appreciates in value and earn from from the vault's profits as well.
 
-3. The Double Boost Vault - which trades a funding rate based strategy on any pair we input, this strategy is very flexible as we can aim to improve it to even perform funding rate arbitrage between different pairs funding rates. Users deposit USDC into this vault.
+3. The Double Boost Vault - which trades a funding rate based strategy on any pair we input, this strategy is very flexible as we can aim to improve it to even perform funding rate arbitrage betweenjj different pairs funding rates. Users deposit USDC into this vault.
 
 ## Where we deployed to/contract details
 
 We created and deployed our different vaults on the Base Devnet Chain.
 
-1. Kwentaing Tiger Vault - HrAuKuC8KuhqRcdmUu3WhSrNFv4HaV6XtqCdashhVH1A
+1. Drifting Tiger Vault - HrAuKuC8KuhqRcdmUu3WhSrNFv4HaV6XtqCdashhVH1A
 
 2. Bonking Dragon - 5QAPFbeAHtgb8LkbDBMSyaAmwtQRufWceQLLaxdSse6M
 
