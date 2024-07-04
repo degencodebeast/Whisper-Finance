@@ -1,12 +1,12 @@
 # Whisper Finance x Onchain Summer Hackathon
 
 Video Demo - [Demo video](https://www.loom.com/share/38af2c5c8a8e46c29e16e316099dcee1) <br />
-Live Link - [Whisper Finance dapp]() <br />
-Pitch Deck - [Figma slides]() <br/>
+Live Link - [Whisper Finance dapp](https://whisper-finance.vercel.app/) <br />
+Pitch Deck - [Figma slides](https://www.figma.com/proto/8orfECSFwjVy1BYec0Sg79/Whisper-Finance?node-id=1-102&t=suSp8ZtLLfbwbPIb-1&scaling=contain&content-scaling=fixed&page-id=0%3A1) <br/>
 
 ## ✨ Description
 
-[Whisper Finance]() is an algorithmic trading protocol for Base. It brings professional-grade quant finance trading algorithms and tools to retail on Base. It trades on most popular Base DEXes, but currently just on Kwenta protocol. We employed active yield vaults where users can pool in their USDC, BONK into the vault pools, and earn real yield from our algorithmic strategies which are connected to these vaults and running 24/7 under close monitoring.
+[Whisper Finance](https://whisper-finance.vercel.app/) is an algorithmic trading protocol for Base. It brings professional-grade quant finance trading algorithms and tools to retail on Base. It trades on most popular Base DEXes, but currently just on Kwenta protocol. We employed active yield vaults where users can pool in their USDC, BONK into the vault pools, and earn real yield from our algorithmic strategies which are connected to these vaults and running 24/7 under close monitoring.
 
 ## Inspiration
 97% of traders are not profitable, the market is so efficient that the only way you can be profitable is if you find your edge, that's why all the hedge funds and wall street employ quantitative methods so they can beat the market and they are so secretive about their alpha. We thought about coming up with our own edge with automation and coming up with quantitative methods to build strategies that would otherwise have been impossible to implement without automation to build out our edge and then allow retail to enjoy the profits from the institutional quantitative trading methods from our platform.
