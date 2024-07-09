@@ -6,7 +6,7 @@ import asyncio
 import schedule
 import threading
 import sys
-import pandas_ta as ta
+import pandas_ta as pd_ta
 from datetime import datetime, timedelta
 import requests
 import json
@@ -275,7 +275,7 @@ async def close_all_positions(account):
 
 async def calculate_bollinger_bands(df, length=20, std_dev=2):
     df['close'] = pd.to_numeric(df['close'], errors='coerce')
-    bollinger_bands = ta.bbands(df['close'], length=length, std=std_dev)
+    bollinger_bands = pd_ta.bbands(df['close'], length=length, std=std_dev)
     df = pd.concat([df, bollinger_bands], axis=1)
     df['BandWidth'] = df['BBU_20_2.0'] - df['BBL_20_2.0']
     tight_threshold = df['BandWidth'].quantile(0.2)
@@ -358,6 +358,7 @@ async def process_data_to_df(candles):
         return pd.DataFrame()
     
 async def bot():
+    print("running bot")
     pos_size = size 
     # account = eth_account.Account.from_key(private_key)
     # account1 = account.address
